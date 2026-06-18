@@ -431,7 +431,7 @@ class DatabricksEngineAdapter(SparkEngineAdapter, GrantsFromInfoSchemaMixin):
             .order_by("ordinal_position ASC")
         )
 
-        self.cursor.execute(query)
+        self.cursor.execute(query.sql(dialect="databricks"))
         result = self.cursor.fetchall()
 
         return {row[0]: exp.DataType.build(row[1], dialect=self.dialect) for row in result}
