@@ -12,7 +12,7 @@ from enum import Enum
 from functools import partial
 
 import pydantic
-from pydantic import Field
+from pydantic import Field, computed_field
 from pydantic_core import from_json
 from packaging import version
 from sqlglot import exp
@@ -108,7 +108,10 @@ class ConnectionConfig(abc.ABC, BaseConfig):
     catalog_type_overrides: t.Optional[t.Dict[str, str]] = None
 
     # Whether to share a  single connection across threads or create a new connection per thread.
-    shared_connection: t.ClassVar[bool] = False
+    @computed_field
+    @property
+    def shared_connection(self) -> bool:
+        return False
 
     @property
     @abc.abstractmethod
@@ -309,7 +312,10 @@ class BaseDuckDBConnectionConfig(ConnectionConfig):
 
     token: t.Optional[str] = None
 
-    shared_connection: t.ClassVar[bool] = True
+    @computed_field
+    @property
+    def shared_connection(self) -> bool:
+        return True
 
     _data_file_to_adapter: t.ClassVar[t.Dict[str, EngineAdapter]] = {}
 
@@ -818,10 +824,14 @@ class DatabricksConnectionConfig(ConnectionConfig):
     DISPLAY_NAME: t.ClassVar[t.Literal["Databricks"]] = "Databricks"
     DISPLAY_ORDER: t.ClassVar[t.Literal[3]] = 3
 
-    shared_connection: t.ClassVar[bool] = True
-
     _concurrent_tasks_validator = concurrent_tasks_validator
     _http_headers_validator = http_headers_validator
+
+    @computed_field
+    @property
+    def shared_connection(self) -> bool:
+        """The connection should only be shared if U2M OAuth is being used"""
+        return self.auth_type is not None and self.oauth_client_id is None
 
     @model_validator(mode="before")
     def _databricks_connect_validator(cls, data: t.Any) -> t.Any:
