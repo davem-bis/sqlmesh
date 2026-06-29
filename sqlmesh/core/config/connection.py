@@ -110,7 +110,11 @@ class ConnectionConfig(abc.ABC, BaseConfig):
     catalog_type_overrides: t.Optional[t.Dict[str, str]] = None
 
     # Whether to share a  single connection across threads or create a new connection per thread.
-    @computed_field
+    #
+    # MyPy throws a "Decorators on top of @property are not supported" error despite this being a
+    # valid decoration, and Pydantic recommend disabling the MyPy hint for this reason - see:
+    # https://pydantic.dev/docs/validation/2.0/usage/computed_fields/
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def shared_connection(self) -> bool:
         return False
@@ -314,7 +318,7 @@ class BaseDuckDBConnectionConfig(ConnectionConfig):
 
     token: t.Optional[str] = None
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def shared_connection(self) -> bool:
         return True
@@ -829,7 +833,7 @@ class DatabricksConnectionConfig(ConnectionConfig):
     _concurrent_tasks_validator = concurrent_tasks_validator
     _http_headers_validator = http_headers_validator
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def shared_connection(self) -> bool:
         """The connection should only be shared if U2M OAuth is being used"""
