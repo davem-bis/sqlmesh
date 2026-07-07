@@ -837,7 +837,7 @@ class DatabricksConnectionConfig(ConnectionConfig):
     @property
     def shared_connection(self) -> bool:
         """The connection should only be shared if U2M OAuth is being used"""
-        return self.auth_type is not None and self.oauth_client_id is None
+        return self.auth_type is not None and self.oauth_client_secret is None
 
     @model_validator(mode="before")
     def _databricks_connect_validator(cls, data: t.Any) -> t.Any:

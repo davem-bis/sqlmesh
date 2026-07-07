@@ -1456,7 +1456,8 @@ def test_databricks__u2m_oauth__shared_connection_pool(make_config):
     assert isinstance(adapter._connection_pool, ThreadLocalSharedConnectionPool)
 
 
-def test_databricks__m2m_oauth__connection_pool(make_config):
+@patch.object(DatabricksConnectionConfig, "_connection_factory_with_kwargs")
+def test_databricks__m2m_oauth__connection_pool(mock_connection_factory_with_kwargs, make_config):
     from sqlmesh.utils.connection_pool import ThreadLocalConnectionPool
 
     config = make_config(
@@ -1465,6 +1466,7 @@ def test_databricks__m2m_oauth__connection_pool(make_config):
         http_path="sql/test/foo",
         auth_type="databricks-oauth",
         oauth_client_id="oauth_client_id",
+        oauth_client_secret="oauth_client_secret",
         concurrent_tasks=4,
     )
     assert isinstance(config, DatabricksConnectionConfig)
