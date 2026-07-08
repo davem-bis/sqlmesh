@@ -12,7 +12,6 @@
     "ghcr.io/devcontainers/features/docker-in-docker:4": {}
   },
   "postCreateCommand": "bash .devcontainer/post-create-command.sh",
-  "postStartCommand": "bash .devcontainer/post-start-command.sh",
   "customizations": {
     "vscode": {
       "extensions": [

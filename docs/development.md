@@ -11,6 +11,20 @@ Before you begin, ensure you have the following installed on your machine. Exact
 * OpenJDK >= 11
 * Python >= 3.9 < 3.13
 
+### Windows Prerequisites
+
+The development environment of SQLMesh depends both on:
+
+* Python functionality (e.g. `SIGUSR1`) that is only available on UNIX systems, and;
+* Symbolic links, which whilst available on Windows, are more involved that on Linux or MacOS.
+
+For the Python functionality, a dev container is provided to develop against Ubuntu 24 with Python 3.12.
+
+For symbolic links, you must ensure that:
+
+- The git configuration `core.symlinks` is set to `true`
+- The process that git runs as is permitted to create symbolic links. This can be done via running git as an administrator, or enabling developer mode on Windows.
+
 ## Virtual environment setup
 
 We do recommend using a virtual environment to develop SQLMesh.
