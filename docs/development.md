@@ -16,14 +16,14 @@ Before you begin, ensure you have the following installed on your machine. Exact
 The development environment of SQLMesh depends both on:
 
 * Python functionality (e.g. `SIGUSR1`) that is only available on UNIX systems, and;
-* Symbolic links, which whilst available on Windows, are more involved that on Linux or MacOS.
+* Symbolic links in the repository which, whilst available on Windows, typically require additional permissions for the process running git.
 
 For the Python functionality, a dev container is provided to develop against Ubuntu 24 with Python 3.12.
 
-For symbolic links, you must ensure that:
+For symbolic links, you must ensure that when checking out the repository:
 
 - The git configuration `core.symlinks` is set to `true`
-- The process that git runs as is permitted to create symbolic links. This can be done via running git as an administrator, or enabling developer mode on Windows.
+- The process that git runs as is permitted to create symbolic links. This can typically be done by running git as an administrator, or enabling [developer mode on Windows](https://learn.microsoft.com/en-us/windows/advanced-settings/developer-mode).
 
 ## Virtual environment setup
 
